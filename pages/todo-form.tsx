@@ -53,3 +53,4 @@ export function TodoForm({ addTodo }: TodoFormProps) {
   )
 }
 
+export default TodoForm;

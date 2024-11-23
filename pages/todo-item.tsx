@@ -23,8 +23,12 @@ interface TodoItemProps {
 
 export function TodoItem({ todo, editTodo, removeTodo, toggleComplete }: TodoItemProps) {
   const [isEditing, setIsEditing] = useState(false)
-  const [editedText, setEditedText] = useState(todo.text)
-  const [editedPriority, setEditedPriority] = useState(todo.priority)
+  const [editedText, setEditedText] = useState(todo?.text || '')
+  const [editedPriority, setEditedPriority] = useState(todo?.priority || 'low')
+
+  if (!todo) {
+    return null;
+  }
 
   const handleEdit = () => {
     if (editedText.trim()) {
@@ -42,8 +46,8 @@ export function TodoItem({ todo, editTodo, removeTodo, toggleComplete }: TodoIte
   return (
     <div className="flex items-center space-x-2 bg-white p-2 rounded-md shadow">
       <Checkbox
-        checked={todo.isCompleted}
-        onCheckedChange={() => toggleComplete(todo.id)}
+        checked={todo?.isCompleted}
+        onCheckedChange={() => toggleComplete(todo?.id)}
       />
       {isEditing ? (
         <>
@@ -71,16 +75,16 @@ export function TodoItem({ todo, editTodo, removeTodo, toggleComplete }: TodoIte
         </>
       ) : (
         <>
-          <span className={`flex-grow ${todo.isCompleted ? "line-through text-gray-500" : ""}`}>
-            {todo.text}
+          <span className={`flex-grow ${todo?.isCompleted ? "line-through text-gray-500" : ""}`}>
+            {todo?.text}
           </span>
-          <span className={`px-2 py-1 rounded-full text-xs font-semibold ${priorityColors[todo.priority]}`}>
-            {todo.priority}
+          <span className={`px-2 py-1 rounded-full text-xs font-semibold ${priorityColors[todo?.priority]}`}>
+            {todo?.priority}
           </span>
           <Button variant="ghost" size="icon" onClick={() => setIsEditing(true)}>
             <Pencil className="h-4 w-4" />
           </Button>
-          <Button variant="ghost" size="icon" onClick={() => removeTodo(todo.id)}>
+          <Button variant="ghost" size="icon" onClick={() => removeTodo(todo?.id)}>
             <Trash2 className="h-4 w-4" />
           </Button>
         </>
@@ -89,3 +93,4 @@ export function TodoItem({ todo, editTodo, removeTodo, toggleComplete }: TodoIte
   )
 }
 
+export default TodoItem;
